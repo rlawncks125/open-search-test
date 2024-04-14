@@ -69,15 +69,36 @@ const index_name = "books";
 //         query: "The",
 //       },
 //     },
+//     match: {
+//       year: "2018",
+//     },
 //   },
 // };
 
-// client
-//   .search({
-//     index: index_name,
-//     body: query,
-//   })
-//   .then((res) => console.log(res.body.hits.hits));
+// const query = {
+//   query: {
+//     multi_match: {
+//       query: "Out*",
+//       fields: ["title", "year", "author", "genre"],
+//     },
+//   },
+// };
+
+const query = {
+  query: {
+    simple_query_string: {
+      query: "The King 2018 fiction",
+      fields: ["title", "year", "author", "genre"],
+    },
+  },
+};
+
+client
+  .search({
+    index: index_name,
+    body: query,
+  })
+  .then((res) => console.log(res.body.hits.hits));
 
 // ########## 2 - 3. Updating a document ( 문서 업데이트 )
 // 다음 코드는 지정된 id 의 document에
