@@ -62,9 +62,28 @@ services:
     networks:
       - opensearch-net
 
+  # data-prepper-test:
+  #   image: opensearchproject/data-prepper:latest
+  #   container_name: data-prepper-test
+  #   volumes:
+  #     - ./data-prepper/log-pipeline.yaml:/usr/share/data-prepper/pipelines/pipelines.yaml
+  #     - ./test.log:/var/test/test.log
+  #     - ./data-prepper/out:/var/output
+  #   networks:
+  #     - opensearch-net
+
+  logstash-test:
+    image: docker.elastic.co/logstash/logstash:8.13.2
+    container_name: logstash-test
+    volumes:
+      - ./logstash/pipelines:/usr/share/logstash/pipeline/
+      - ./test.log:/var/test/test.log
+      - ./logstash/out:/var/output
+
 # volumes:
 #   opensearch-data1:
 #   opensearch-data2:
 
 networks:
   opensearch-net:
+# docker run --name data-prepper-test -v ./data-prepper/log_pipeline.yaml:/usr/share/data-prepper/pipelines/log_pipeline.yaml -v ./test.log:/var/test/test-log --network opensearch-net opensearchproject/data-prepper:2

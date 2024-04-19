@@ -3,3 +3,8 @@ opensearch-data2
 
 node.js/node_modules
 node.js/package-lock.json
+
+
+data-prepper/out/**
+
+logstash/out/**

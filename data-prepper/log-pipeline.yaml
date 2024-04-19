@@ -1,0 +1,17 @@
+sample-pipeline:
+  workers: 2
+  delay: "5000"
+  source:
+    file:
+      path: /var/test/test.log
+  # buffer:
+  #   bounded_blocking:
+  #     buffer_size: 1024 # max number of records the buffer will accept
+  #     batch_size: 256 # max number of records the buffer will drain for each read
+  # processor:
+  #   - string_converter:
+  #       upper_case: true
+  sink:
+    - file:
+        path: /var/output/output.log
+        # append: true
