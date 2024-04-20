@@ -53,15 +53,18 @@ const settings = {
   },
   mappings: {
     properties: {
-      User: {
+      user: {
         type: "text",
         analyzer: "my_four_analyzer",
         search_analyzer: "my_four_analyzer",
       },
-      Status: {
+      status: {
         type: "text",
         analyzer: "autocomplete",
         search_analyzer: "autocomplete",
+      },
+      Method: {
+        type: "text",
       },
     },
   },
@@ -138,11 +141,42 @@ console.log(response);
 //   },
 // };
 
-const query = {
-  query: {
-    match_all: {},
-  },
-};
+// const query = {
+//   query: {
+//     match_all: {},
+//   },
+// };
+
+// # Boolean query
+// must : and 연산
+// must_not : not 연산
+// should : or 연산
+// filter
+// const query = {
+//   from: 0,
+//   size: 10,
+//   query: {
+//     bool: {
+//       must: [
+//         {
+//           match: {
+//             year: "2020",
+//           },
+//         },
+//         {
+//           match: {
+//             month: "14",
+//           },
+//         },
+//         {
+//           match: {
+//             day: "20",
+//           },
+//         },
+//       ],
+//     },
+//   },
+// };
 
 // client
 //   .search({
