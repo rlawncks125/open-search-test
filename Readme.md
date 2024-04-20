@@ -14,6 +14,20 @@
 
 [Opensearch 에 있는 logstash 설명 문서](https://opensearch.org/docs/latest/tools/logstash/index/)
 
+[logstash openserach plugin 설치 ](https://opensearch.org/docs/latest/tools/logstash/index/)
+
+## logstash openserach plugin 설치
+
+```bash
+# Tarball 섹션의 4번부터
+
+docker exec -it <logstash container id> bash
+
+cd bin
+
+logstash-plugin install logstash-output-opensearch
+```
+
 # 에러 핸들
 
 #### OpenSearch 실행시 max virtual memory areas vm.max_map_count [65530] is too low, increase to at least [262144] 에러가 발생하는 경우
