@@ -9,27 +9,72 @@ const client = new Client({
   node: protocol + "://" + host + ":" + port,
 });
 
-const index_name = "books";
+const index_name = "users";
 
 // ########## 1. Creating an index ( 인덱스 생성 )
 
 // const settings = {
 //   settings: {
 //     index: {
-//       number_of_shards: 4,
-//       number_of_replicas: 3,
+//       number_of_shards: 2,
+//       number_of_replicas: 1,
 //     },
 //   },
 // };
 
-// const response = client.indices
-//   .create({
-//     index: index_name,
-//     body: settings,
-//   })
-//   .then((res) => console.log(res));
+const settings = {
+  settings: {
+    analysis: {
+      filter: {
+        edge_ngram_filter: {
+          type: "edge_ngram",
+          min_gram: 1,
+          max_gram: 20,
+        },
+        four_ngram_filter: {
+          type: "edge_ngram",
+          min_gram: 4,
+          max_gram: 20,
+        },
+      },
+      analyzer: {
+        autocomplete: {
+          type: "custom",
+          tokenizer: "standard",
+          filter: ["lowercase", "edge_ngram_filter"],
+        },
+        my_four_analyzer: {
+          type: "custom",
+          tokenizer: "standard",
+          filter: ["lowercase", "four_ngram_filter"],
+        },
+      },
+    },
+  },
+  mappings: {
+    properties: {
+      User: {
+        type: "text",
+        analyzer: "my_four_analyzer",
+        search_analyzer: "my_four_analyzer",
+      },
+      Status: {
+        type: "text",
+        analyzer: "autocomplete",
+        search_analyzer: "autocomplete",
+      },
+    },
+  },
+};
 
-// console.log(response);
+const response = client.indices
+  .create({
+    index: index_name,
+    body: settings,
+  })
+  .then((res) => console.log(res));
+
+console.log(response);
 
 // ########## 1-2. Deleting an index ( 인덱스 삭제 )
 // client.indices
@@ -84,21 +129,27 @@ const index_name = "books";
 //   },
 // };
 
+// const query = {
+//   query: {
+//     simple_query_string: {
+//       query: "The King 2018 fiction",
+//       fields: ["title", "year", "author", "genre"],
+//     },
+//   },
+// };
+
 const query = {
   query: {
-    simple_query_string: {
-      query: "The King 2018 fiction",
-      fields: ["title", "year", "author", "genre"],
-    },
+    match_all: {},
   },
 };
 
-client
-  .search({
-    index: index_name,
-    body: query,
-  })
-  .then((res) => console.log(res.body.hits.hits));
+// client
+//   .search({
+//     index: index_name,
+//     body: query,
+//   })
+//   .then((res) => console.log(res.body.hits.hits));
 
 // ########## 2 - 3. Updating a document ( 문서 업데이트 )
 // 다음 코드는 지정된 id 의 document에
