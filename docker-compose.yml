@@ -76,9 +76,22 @@ services:
     image: docker.elastic.co/logstash/logstash:8.13.2
     container_name: logstash-test
     volumes:
-      - ./logstash/pipelines:/usr/share/logstash/pipeline/
+      # 하나의 pipline 할떄
+      # - ./logstash/single:/usr/share/logstash/pipeline/
+      # 멀티 pipline 할떄
+      - ./logstash/pipelines/pipelines.yml:/usr/share/logstash/config/pipelines.yml
+      - ./logstash/config:/etc/logstash/test/config/
       - ./test.log:/var/test/test.log
+      - ./board.log:/var/test/board.log
+      - ./board-2.log:/var/test/board-2.log
       - ./logstash/out:/var/output
+    environment:
+      - xpack.monitoring.enabled=false
+    networks:
+      - opensearch-net
+    depends_on:
+      - opensearch-node1
+      - opensearch-dashboards
 
 # volumes:
 #   opensearch-data1:

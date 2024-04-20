@@ -1,12 +1,19 @@
- input {
-   file {
-        path => "/var/test/test.log"
-        start_position => "beginning"
-        sincedb_path => "/dev/null"
-   }
- }
- output {
-   file {
-     path => "/var/output/output.log"
-   }
- }
+- pipeline.id: user-log
+  pipeline.workers: 1
+  path.config: "/etc/logstash/test/config/user.conf"
+
+
+
+- pipeline.id: board
+  path.config: "/etc/logstash/test/config/board.conf"
+  pipeline.workers: 1
+
+
+- pipeline.id: board-2
+  path.config: "/etc/logstash/test/config/board-2.conf"
+  pipeline.workers: 1
+
+
+  # pipeline.workers: 1
+  # queue.type: persisted
+
