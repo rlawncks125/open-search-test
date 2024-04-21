@@ -22,62 +22,62 @@ const index_name = "users";
 //   },
 // };
 
-const settings = {
-  settings: {
-    analysis: {
-      filter: {
-        edge_ngram_filter: {
-          type: "edge_ngram",
-          min_gram: 1,
-          max_gram: 20,
-        },
-        four_ngram_filter: {
-          type: "edge_ngram",
-          min_gram: 4,
-          max_gram: 20,
-        },
-      },
-      analyzer: {
-        autocomplete: {
-          type: "custom",
-          tokenizer: "standard",
-          filter: ["lowercase", "edge_ngram_filter"],
-        },
-        my_four_analyzer: {
-          type: "custom",
-          tokenizer: "standard",
-          filter: ["lowercase", "four_ngram_filter"],
-        },
-      },
-    },
-  },
-  mappings: {
-    properties: {
-      user: {
-        type: "text",
-        analyzer: "my_four_analyzer",
-        search_analyzer: "my_four_analyzer",
-      },
-      status: {
-        type: "text",
-        analyzer: "autocomplete",
-        search_analyzer: "autocomplete",
-      },
-      Method: {
-        type: "text",
-      },
-    },
-  },
-};
+// const settings = {
+//   settings: {
+//     analysis: {
+//       filter: {
+//         edge_ngram_filter: {
+//           type: "edge_ngram",
+//           min_gram: 1,
+//           max_gram: 20,
+//         },
+//         four_ngram_filter: {
+//           type: "edge_ngram",
+//           min_gram: 4,
+//           max_gram: 20,
+//         },
+//       },
+//       analyzer: {
+//         autocomplete: {
+//           type: "custom",
+//           tokenizer: "standard",
+//           filter: ["lowercase", "edge_ngram_filter"],
+//         },
+//         my_four_analyzer: {
+//           type: "custom",
+//           tokenizer: "standard",
+//           filter: ["lowercase", "four_ngram_filter"],
+//         },
+//       },
+//     },
+//   },
+//   mappings: {
+//     properties: {
+//       user: {
+//         type: "text",
+//         analyzer: "my_four_analyzer",
+//         search_analyzer: "my_four_analyzer",
+//       },
+//       status: {
+//         type: "text",
+//         analyzer: "autocomplete",
+//         search_analyzer: "autocomplete",
+//       },
+//       Method: {
+//         type: "text",
+//       },
+//     },
+//   },
+// };
 
-const response = client.indices
-  .create({
-    index: index_name,
-    body: settings,
-  })
-  .then((res) => console.log(res));
+// const response = client.indices
+//   .create({
+//     index: index_name,
+//     body: settings,
+//   })
+//   .then((res) => console.log(res));
 
-console.log(response);
+// console.log(response);
 
 // ########## 1-2. Deleting an index ( 인덱스 삭제 )
 // client.indices
@@ -109,6 +109,7 @@ console.log(response);
 //   .then((res) => console.log(res));
 
 // ########## 2 - 2. Searching for documents ( 문서 검색 )
+// https://opensearch.org/docs/latest/query-dsl/full-text/index/
 
 // const query = {
 //   query: {
@@ -178,12 +179,25 @@ console.log(response);
 //   },
 // };
 
-// client
-//   .search({
-//     index: index_name,
-//     body: query,
-//   })
-//   .then((res) => console.log(res.body.hits.hits));
+const query = {
+  from: 0,
+  size: 10,
+  query: {
+    match_phrase: {
+      // date: "2021-13",
+      // date: "2021-14",
+      // date: "2021",
+      date: "2020",
+    },
+  },
+};
+
+client
+  .search({
+    index: index_name,
+    body: query,
+  })
+  .then((res) => console.log(res.body.hits.hits));
 
 // ########## 2 - 3. Updating a document ( 문서 업데이트 )
 // 다음 코드는 지정된 id 의 document에
