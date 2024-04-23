@@ -4,7 +4,8 @@ const protocol = "http";
 const port = 9200;
 
 // Create a client
-const { Client } = require("@opensearch-project/opensearch");
+// const { Client } = require("@opensearch-project/opensearch");
+const { Client } = require("@elastic/elasticsearch");
 const client = new Client({
   node: protocol + "://" + host + ":" + port,
 });
@@ -197,7 +198,10 @@ client
     index: index_name,
     body: query,
   })
-  .then((res) => console.log(res.body.hits.hits));
+  //   opensearch
+  // .then((res) => console.log(res.body.hits.hits));
+  //   elasticSearch
+  .then((res) => console.log(res.hits.hits));
 
 // ########## 2 - 3. Updating a document ( 문서 업데이트 )
 // 다음 코드는 지정된 id 의 document에
